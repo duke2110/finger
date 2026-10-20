@@ -1,166 +1,661 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Cyber Middle Finger</title>
+    <meta name="theme-color" content="#08020f">
+    <title>System Override | Neon Cyberpunk</title>
+
     <style>
+        :root {
+            --pink: #ff0055;
+            --cyan: #00ffff;
+            --purple: #a855f7;
+            --bg: #08020f;
+        }
+
         * {
             box-sizing: border-box;
         }
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: radial-gradient(circle, #1a0826 0%, #05010d 100%);
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
-            position: relative;
-        }
 
-        /* Hiệu ứng hạt bụi bay nền */
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
+        html, body {
             width: 100%;
             height: 100%;
+            margin: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            position: relative;
+            isolation: isolate;
+            background:
+                radial-gradient(ellipse at 50% 45%,
+                    #251035 0%, #10071d 42%, var(--bg) 100%);
+            color: white;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        /* Nền neon */
+        .ambient {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
             pointer-events: none;
-            z-index: 1;
+            overflow: hidden;
         }
 
+        .ambient::before,
+        .ambient::after {
+            content: "";
+            position: absolute;
+            width: 45vw;
+            height: 45vw;
+            min-width: 280px;
+            min-height: 280px;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.17;
+            animation: drift 12s ease-in-out infinite alternate;
+        }
+
+        .ambient::before {
+            background: var(--pink);
+            top: -15%;
+            left: -15%;
+        }
+
+        .ambient::after {
+            background: var(--cyan);
+            bottom: -20%;
+            right: -15%;
+            animation-delay: -6s;
+        }
+
+        /* Lưới cyberpunk */
+        .grid-floor {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.13;
+            background-image:
+                linear-gradient(#00ffff 1px, transparent 1px),
+                linear-gradient(90deg, #00ffff 1px, transparent 1px);
+            background-size: 55px 55px;
+            mask-image: linear-gradient(
+                to bottom, transparent 5%, black 100%
+            );
+            transform: perspective(500px) rotateX(35deg) scale(1.5);
+            transform-origin: bottom;
+        }
+
+        /* Canvas hiệu ứng hạt */
+        #particleCanvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Nội dung chính */
         .container {
-            text-align: center;
+            position: relative;
             z-index: 2;
+            width: min(92vw, 650px);
+            text-align: center;
+            padding: 30px 16px;
         }
 
-        /* Định hình ngón giữa phát sáng */
-        .emoji {
-            font-size: 130px;
-            margin-bottom: 20px;
-            cursor: pointer;
+        .eyebrow {
+            color: var(--cyan);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 5px;
+            margin-bottom: 28px;
+            opacity: 0.8;
+            text-transform: uppercase;
+        }
+
+        .emoji-wrap {
             display: inline-block;
-            filter: drop-shadow(0 0 10px #ff0055) drop-shadow(0 0 30px #ff0055);
-            animation: float 3s ease-in-out infinite, pulseGlow 2s infinite alternate;
-            transition: transform 0.2s;
+            position: relative;
+            margin-bottom: 25px;
+            animation: float 3.5s ease-in-out infinite;
+        }
+
+        .emoji-wrap::before {
+            content: "";
+            position: absolute;
+            inset: 15%;
+            border-radius: 50%;
+            background: var(--pink);
+            filter: blur(65px);
+            opacity: 0.4;
+            z-index: -1;
+            transition: background 0.3s, opacity 0.3s;
+        }
+
+        .emoji {
+            display: block;
+            appearance: none;
+            border: 0;
+            padding: 10px;
+            background: transparent;
+            color: inherit;
+            font-size: clamp(100px, 21vw, 165px);
+            line-height: 1.2;
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            filter:
+                drop-shadow(0 0 12px var(--pink))
+                drop-shadow(0 0 30px rgba(255, 0, 85, 0.65));
+            transition: transform 0.22s ease, filter 0.22s ease;
         }
 
         .emoji:hover {
-            transform: scale(1.2) rotate(5deg);
-            filter: drop-shadow(0 0 20px #00ffff) drop-shadow(0 0 40px #00ffff);
+            transform: scale(1.13) rotate(6deg);
+            filter:
+                drop-shadow(0 0 15px var(--cyan))
+                drop-shadow(0 0 45px var(--cyan));
         }
 
-        /* Chữ Cyberpunk */
+        .emoji:active {
+            transform: scale(0.88);
+        }
+
+        .emoji:focus-visible {
+            outline: 2px solid var(--cyan);
+            outline-offset: 8px;
+            border-radius: 20px;
+        }
+
         h1 {
-            font-size: 28px;
-            letter-spacing: 2px;
+            margin: 0;
+            font-size: clamp(25px, 5.5vw, 42px);
+            font-weight: 900;
+            letter-spacing: clamp(2px, 0.7vw, 7px);
             text-transform: uppercase;
-            color: #fff;
-            text-shadow: 0 0 5px #fff, 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff;
-            animation: flicker 1.5s infinite alternate;
+            color: white;
+            text-shadow:
+                0 0 5px white,
+                0 0 12px var(--cyan),
+                0 0 30px var(--cyan);
+            animation: flicker 5s linear infinite;
         }
 
-        /* Hiệu ứng bay bổng nhẹ nhàng */
+        .subtitle {
+            margin-top: 15px;
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: rgba(255,255,255,0.55);
+            text-transform: uppercase;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            margin-top: 32px;
+            padding: 10px 17px;
+            border: 1px solid rgba(0,255,255,0.25);
+            border-radius: 3px;
+            background: rgba(0,255,255,0.04);
+            color: rgba(255,255,255,0.75);
+            font-size: 10px;
+            letter-spacing: 2px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: #00ff9d;
+            box-shadow: 0 0 10px #00ff9d;
+            animation: blink 1.5s infinite;
+        }
+
+        .hint {
+            margin-top: 18px;
+            font-size: 10px;
+            color: rgba(255,255,255,0.35);
+            letter-spacing: 1px;
+        }
+
+        /* Vệt quét màn hình */
+        .scanlines {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            pointer-events: none;
+            opacity: 0.08;
+            background: repeating-linear-gradient(
+                to bottom,
+                transparent 0px,
+                transparent 3px,
+                rgba(0,0,0,0.65) 4px
+            );
+        }
+
+        /* Thông báo khi kích hoạt */
+        .flash {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: var(--pink);
+            opacity: 0;
+        }
+
+        .flash.active {
+            animation: flash 0.3s ease-out;
+        }
+
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-15px); }
         }
 
-        /* Hiệu ứng xung mạch phát sáng dập dình */
-        @keyframes pulseGlow {
-            0% { filter: drop-shadow(0 0 15px #ff0055) drop-shadow(0 0 30px #ff0055); }
-            100% { filter: drop-shadow(0 0 25px #ff0055) drop-shadow(0 0 60px #ff0055); }
+        @keyframes drift {
+            from { transform: translate(0, 0) scale(1); }
+            to { transform: translate(12vw, 8vh) scale(1.25); }
         }
 
-        /* Hiệu ứng đèn Neon nhấp nháy lỗi */
         @keyframes flicker {
-            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-                text-shadow: 0 0 5px #fff, 0 0 10px #00ffff, 0 0 20px #00ffff;
+            0%, 93%, 96%, 98%, 100% {
+                opacity: 1;
+                text-shadow:
+                    0 0 5px white,
+                    0 0 12px var(--cyan),
+                    0 0 30px var(--cyan);
             }
-            20%, 24%, 55% {        
-                text-shadow: none;
-                color: #333;
+            94%, 97% {
+                opacity: 0.72;
+                text-shadow: 2px 0 var(--pink), -2px 0 var(--cyan);
+            }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        @keyframes flash {
+            0% { opacity: 0.35; }
+            100% { opacity: 0; }
+        }
+
+        @media (max-width: 480px) {
+            .eyebrow { letter-spacing: 3px; }
+            .subtitle { letter-spacing: 2px; }
+            .status { margin-top: 25px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
             }
         }
     </style>
 </head>
+
 <body>
+    <div class="ambient"></div>
+    <div class="grid-floor"></div>
+    <canvas id="particleCanvas" aria-hidden="true"></canvas>
+    <div class="flash" id="flash"></div>
 
-    <!-- Tạo canvas nền hiệu ứng ma trận hạt -->
-    <canvas class="particles" id="particleCanvas"></canvas>
+    <main class="container">
+        <div class="eyebrow">/// Unauthorized access detected</div>
 
-    <div class="container">
-        <!-- Ngón tay giữa phát sáng Cyberpunk -->
-        <div class="emoji" onclick="triggerExplosion()">🖕</div>
-        <h1>System Override</h1>
-    </div>
+        <div class="emoji-wrap">
+            <button
+                class="emoji"
+                id="trigger"
+                type="button"
+                aria-label="Kích hoạt hiệu ứng neon"
+                title="Click để kích hoạt"
+            >🖕</button>
+        </div>
+
+        <h1 id="title">System Override</h1>
+        <div class="subtitle">No permission. No problem.</div>
+
+        <div class="status">
+            <span class="status-dot"></span>
+            <span id="statusText">SYSTEM ONLINE</span>
+        </div>
+
+        <div class="hint">CLICK THE ICON TO INITIATE OVERRIDE</div>
+    </main>
+
+    <div class="scanlines"></div>
 
     <script>
-        // Logic tạo các hạt Neon chạy mượt mà ở hình nền nền
-        const canvas = document.getElementById('particleCanvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
+        (() => {
+            "use strict";
 
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
+            const canvas = document.getElementById("particleCanvas");
+            const ctx = canvas.getContext("2d", { alpha: true });
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 3 + 1;
-                this.speedY = Math.random() * -1 - 0.5;
-                this.color = Math.random() > 0.5 ? '#ff0055' : '#00ffff';
-                this.opacity = Math.random();
+            if (!ctx) return;
+
+            const title = document.getElementById("title");
+            const statusText = document.getElementById("statusText");
+            const trigger = document.getElementById("trigger");
+            const flash = document.getElementById("flash");
+
+            const reducedMotion = window.matchMedia(
+                "(prefers-reduced-motion: reduce)"
+            );
+
+            const COLORS = ["#ff0055", "#00ffff", "#a855f7"];
+
+            let width = 0;
+            let height = 0;
+            let dpr = 1;
+            let particles = [];
+            let bursts = [];
+            let animationId = 0;
+            let lastTime = 0;
+            let active = true;
+            let isOverridden = false;
+            let flashTimer = 0;
+            let originalTitle = "";
+            let titleTimer = 0;
+
+            const pointer = {
+                x: -1000,
+                y: -1000,
+                active: false
+            };
+
+            function random(min, max) {
+                return Math.random() * (max - min) + min;
             }
-            update() {
-                this.y += this.speedY;
-                if (this.y < 0) {
-                    this.y = canvas.height;
-                    this.x = Math.random() * canvas.width;
+
+            function resize() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+
+                // Giới hạn DPR để tránh tốn bộ nhớ trên màn hình độ phân giải cao.
+                dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+                canvas.width = Math.round(width * dpr);
+                canvas.height = Math.round(height * dpr);
+
+                canvas.style.width = width + "px";
+                canvas.style.height = height + "px";
+
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+                const count = Math.min(
+                    90,
+                    Math.max(35, Math.floor(width * height / 15000))
+                );
+
+                particles = Array.from(
+                    { length: count },
+                    () => new Particle(true)
+                );
+            }
+
+            class Particle {
+                constructor(randomPosition = false, x, y, burst = false) {
+                    this.x = x ?? random(0, width);
+                    this.y = y ?? (
+                        randomPosition ? random(0, height) : height / 2
+                    );
+
+                    this.size = burst ? random(1.5, 4) : random(1, 2.7);
+                    this.color = COLORS[
+                        Math.floor(Math.random() * COLORS.length)
+                    ];
+
+                    this.alpha = random(0.35, 0.9);
+                    this.twinkle = random(0.7, 2);
+                    this.phase = random(0, Math.PI * 2);
+
+                    this.vx = burst ? random(-5, 5) : random(-0.25, 0.25);
+                    this.vy = burst ? random(-5, 5) : random(-0.65, -0.15);
+
+                    this.life = burst ? 1 : Infinity;
+                    this.decay = burst ? random(0.012, 0.025) : 0;
+                    this.burst = burst;
+                }
+
+                update(dt, time) {
+                    const factor = dt / 16.67;
+
+                    if (this.burst) {
+                        this.x += this.vx * factor;
+                        this.y += this.vy * factor;
+                        this.vx *= Math.pow(0.985, factor);
+                        this.vy *= Math.pow(0.985, factor);
+                        this.life -= this.decay * factor;
+                        return this.life > 0;
+                    }
+
+                    this.x += this.vx * factor;
+                    this.y += this.vy * factor;
+
+                    // Hạt phản ứng nhẹ với vị trí con trỏ.
+                    if (pointer.active) {
+                        const dx = this.x - pointer.x;
+                        const dy = this.y - pointer.y;
+                        const distSq = dx * dx + dy * dy;
+
+                        if (distSq < 10000 && distSq > 1) {
+                            const force = (1 - distSq / 10000) * 0.35;
+                            const dist = Math.sqrt(distSq);
+
+                            this.x += (dx / dist) * force * factor;
+                            this.y += (dy / dist) * force * factor;
+                        }
+                    }
+
+                    if (this.y < -10) {
+                        this.y = height + 10;
+                        this.x = random(0, width);
+                    }
+
+                    if (this.x < -10) this.x = width + 10;
+                    if (this.x > width + 10) this.x = -10;
+
+                    this.currentAlpha = this.alpha *
+                        (0.65 + 0.35 * Math.sin(time * 0.002 * this.twinkle + this.phase));
+
+                    return true;
+                }
+
+                draw() {
+                    ctx.globalAlpha = this.burst
+                        ? Math.max(0, this.life)
+                        : (this.currentAlpha ?? this.alpha);
+
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
                 }
             }
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.globalAlpha = this.opacity;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
+
+            function drawConnections() {
+                const maxDistance = 115;
+                const maxDistanceSq = maxDistance * maxDistance;
+
+                ctx.lineWidth = 0.6;
+
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const a = particles[i];
+                        const b = particles[j];
+                        const dx = a.x - b.x;
+                        const dy = a.y - b.y;
+                        const distSq = dx * dx + dy * dy;
+
+                        if (distSq < maxDistanceSq) {
+                            const opacity = (1 - distSq / maxDistanceSq) * 0.2;
+
+                            ctx.globalAlpha = opacity;
+                            ctx.strokeStyle = a.color;
+                            ctx.beginPath();
+                            ctx.moveTo(a.x, a.y);
+                            ctx.lineTo(b.x, b.y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                // Đường nối từ hạt đến con trỏ.
+                if (pointer.active) {
+                    for (const p of particles) {
+                        const dx = p.x - pointer.x;
+                        const dy = p.y - pointer.y;
+                        const distSq = dx * dx + dy * dy;
+
+                        if (distSq < 130 * 130) {
+                            ctx.globalAlpha = (1 - Math.sqrt(distSq) / 130) * 0.35;
+                            ctx.strokeStyle = "#00ffff";
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(pointer.x, pointer.y);
+                            ctx.stroke();
+                        }
+                    }
+                }
             }
-        }
 
-        for (let i = 0; i < 60; i++) {
-            particles.push(new Particle());
-        }
+            function animate(timestamp = 0) {
+                if (!active) return;
 
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
+                const dt = lastTime
+                    ? Math.min(timestamp - lastTime, 40)
+                    : 16.67;
+
+                lastTime = timestamp;
+
+                ctx.clearRect(0, 0, width, height);
+
+                for (const p of particles) {
+                    p.update(dt, timestamp);
+                    p.draw();
+                }
+
+                drawConnections();
+
+                bursts = bursts.filter(p => p.update(dt, timestamp));
+
+                for (const p of bursts) {
+                    p.draw();
+                }
+
+                ctx.globalAlpha = 1;
+                animationId = requestAnimationFrame(animate);
+            }
+
+            function explode(x, y) {
+                // Giới hạn số hạt hiệu ứng để bảo vệ hiệu năng.
+                const count = 75;
+
+                for (let i = 0; i < count; i++) {
+                    bursts.push(new Particle(false, x, y, true));
+                }
+
+                if (bursts.length > 300) {
+                    bursts.splice(0, bursts.length - 300);
+                }
+            }
+
+            function activateOverride() {
+                const rect = trigger.getBoundingClientRect();
+
+                explode(
+                    rect.left + rect.width / 2,
+                    rect.top + rect.height / 2
+                );
+
+                isOverridden = !isOverridden;
+
+                title.classList.remove("glitch-trigger");
+                void title.offsetWidth;
+
+                if (isOverridden) {
+                    title.style.color = "#ff0055";
+                    title.style.textShadow =
+                        "2px 0 #00ffff, -2px 0 #ff0055, 0 0 35px #ff0055";
+                    statusText.textContent = "OVERRIDE ACTIVATED";
+                } else {
+                    title.style.color = "#ffffff";
+                    title.style.textShadow = "";
+                    statusText.textContent = "SYSTEM ONLINE";
+                }
+
+                flash.classList.remove("active");
+                void flash.offsetWidth;
+                flash.classList.add("active");
+
+                clearTimeout(flashTimer);
+                flashTimer = setTimeout(() => {
+                    flash.classList.remove("active");
+                }, 350);
+
+                clearTimeout(titleTimer);
+                titleTimer = setTimeout(() => {
+                    title.style.color = "";
+                    title.style.textShadow = "";
+                }, 1800);
+            }
+
+            trigger.addEventListener("click", activateOverride);
+
+            window.addEventListener("pointermove", event => {
+                pointer.x = event.clientX;
+                pointer.y = event.clientY;
+                pointer.active = event.pointerType !== "touch";
+            }, { passive: true });
+
+            window.addEventListener("pointerleave", () => {
+                pointer.active = false;
             });
-            requestAnimationFrame(animate);
-        }
-        animate();
 
-        // Hiệu ứng tương tác nhỏ: Click vào ngón tay để đổi màu nền tạm thời cực bắt mắt
-        function triggerExplosion() {
-            const h1 = document.querySelector('h1');
-            h1.style.color = '#ff0055';
-            h1.style.textShadow = '0 0 20px #ff0055';
-            setTimeout(() => {
-                h1.style.color = '#fff';
-                h1.style.textShadow = '0 0 10px #00ffff, 0 0 20px #00ffff';
-            }, 300);
-        }
+            window.addEventListener("resize", resize, { passive: true });
+
+            // Dừng vòng lặp khi tab ẩn, tiếp tục khi quay lại.
+            document.addEventListener("visibilitychange", () => {
+                active = !document.hidden;
+                lastTime = 0;
+
+                if (active && !reducedMotion.matches) {
+                    cancelAnimationFrame(animationId);
+                    animationId = requestAnimationFrame(animate);
+                } else {
+                    cancelAnimationFrame(animationId);
+                }
+            });
+
+            resize();
+
+            if (!reducedMotion.matches) {
+                animationId = requestAnimationFrame(animate);
+            } else {
+                // Chế độ giảm chuyển động: vẫn vẽ nền tĩnh.
+                ctx.clearRect(0, 0, width, height);
+                for (const p of particles) p.draw();
+                drawConnections();
+            }
+        })();
     </script>
 </body>
 </html>
