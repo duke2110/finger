@@ -1,296 +1,731 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gửi em, người anh thương ❤️</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>20/10 · gửi bé iu của Duke</title>
+<meta name="description" content="Lời chúc 20/10 nho nhỏ bé xinh.">
+<meta name="theme-color" content="#0b0b0d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+:root{
+  --bg:#070708;
+  --chalk:#f3efe6;
+  --gold:#e3b94e;
+  --blue:#7fa0ea;
+  --blue-deep:#3f63c0;
+  --ink:#2a2d3f;
+  --ink-blue:#2f4c9a;
+  --hand:'Patrick Hand','Segoe Print','Comic Sans MS',cursive;
+  --script:'Dancing Script','Brush Script MT',cursive;
+  --grain:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  min-height:100vh;
+  background:radial-gradient(90% 60% at 50% 0%,#17171c,transparent 70%),var(--bg);
+  color:var(--chalk);
+  font-family:var(--hand);
+  font-size:20px;
+  line-height:1.5;
+  overflow-x:hidden;
+}
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:50;
+  background-image:var(--grain);opacity:.05;mix-blend-mode:screen;
+}
+#petals{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:40}
+
+.chalk{
+  color:var(--chalk);
+  text-shadow:0 0 1px rgba(255,255,255,.9),0 0 7px rgba(255,255,255,.16),1px 1px 0 rgba(255,255,255,.22);
 }
 
-body {
-    min-height: 100vh;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: "Segoe UI", sans-serif;
-    color: white;
-    background: linear-gradient(135deg, #100b2e, #351044, #7d214e);
+/* ============ Trang scrapbook ============ */
+.book{padding:18px 0 70px}
+.page{
+  position:relative;
+  width:min(calc(100% - 20px),880px);
+  margin:0 auto 26px;
+  padding:46px 26px 58px 58px;
+  border-radius:4px 16px 16px 4px;
+  background:
+    radial-gradient(120% 80% at 20% 0%,rgba(255,255,255,.05),transparent 60%),
+    linear-gradient(180deg,#161619,#0d0d10);
+  box-shadow:0 40px 70px -30px #000,0 0 0 1px rgba(255,255,255,.06) inset;
+  overflow:hidden;
+  isolation:isolate;
+}
+.page::before{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:var(--grain);opacity:.07;
+}
+.page .inner{position:relative;z-index:2}
+
+/* gáy lò xo */
+.spiral{
+  position:absolute;left:-12px;top:0;bottom:0;width:46px;z-index:3;
+  display:flex;flex-direction:column;justify-content:space-between;padding:22px 0;
+  pointer-events:none;
+}
+.spiral i{
+  display:block;position:relative;width:46px;height:13px;border-radius:12px;
+  background:linear-gradient(180deg,#3d3d44,#050506 55%,#1d1d21);
+  box-shadow:0 2px 3px rgba(0,0,0,.85),inset 0 1px 0 rgba(255,255,255,.2);
+  transform:rotate(7deg);
+}
+.spiral i::after{
+  content:"";position:absolute;right:3px;top:50%;width:10px;height:10px;margin-top:-5px;
+  border-radius:50%;background:#000;box-shadow:0 0 0 2px #232328;
+}
+/* góc kim loại */
+.corner{position:absolute;width:74px;height:74px;z-index:4;pointer-events:none;
+  filter:drop-shadow(0 3px 4px rgba(0,0,0,.6))}
+.corner.tr{top:0;right:0}
+.corner.br{bottom:0;right:0;transform:scaleY(-1)}
+
+/* sparkle vàng */
+.spark{
+  position:absolute;z-index:1;pointer-events:none;
+  left:var(--x);top:var(--y);width:calc(var(--s) * 1px);height:calc(var(--s) * 1px);
+  fill:var(--c,#e3b94e);
+  animation:tw 3s ease-in-out infinite;animation-delay:var(--dl,0s);
+}
+@keyframes tw{
+  0%,100%{transform:scale(.55) rotate(0deg);opacity:.5}
+  50%{transform:scale(1.1) rotate(22deg);opacity:1}
 }
 
-/* Ánh sáng nền */
-.glow {
-    position: fixed;
-    width: 350px;
-    height: 350px;
-    background: #ff4f91;
-    filter: blur(130px);
-    opacity: .25;
-    border-radius: 50%;
-    animation: glow 6s infinite alternate;
+/* nét vẽ phấn */
+.doodle{fill:none;stroke:var(--chalk);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.hrt{display:inline-block;fill:none;stroke:var(--chalk);stroke-width:1.8}
+.hrt.gold{fill:var(--gold);stroke:none}
+.dash{
+  fill:none;stroke:var(--chalk);stroke-width:2.2px;stroke-linecap:round;
+  stroke-dasharray:4 10;animation:march 14s linear infinite;
+}
+@keyframes march{to{stroke-dashoffset:-240}}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-8px) rotate(3deg)}}
+
+/* hiệu ứng xuất hiện */
+.pop{
+  opacity:0;transform:translateY(14px) scale(.97);
+  animation:pop .9s cubic-bezier(.2,.8,.2,1) forwards;
+  animation-delay:calc(var(--d,0) * 1s);
+}
+@keyframes pop{to{opacity:1;transform:none}}
+.reveal{
+  opacity:0;transform:translateY(26px) rotate(var(--r,0deg));
+  transition:opacity .9s ease,transform .9s cubic-bezier(.2,.8,.2,1);
+}
+.reveal.in{opacity:1;transform:translateY(0) rotate(var(--r,0deg))}
+
+/* ============ Trang bìa ============ */
+.cover .inner{max-width:520px;margin:0 auto;text-align:center}
+.cover-top{position:relative;height:190px}
+.cal{position:absolute;left:0;top:6px;width:68px}
+.cal text{fill:var(--chalk);stroke:none;font-family:var(--hand)}
+.stamp-wrap{position:absolute;right:0;top:0;width:128px;filter:drop-shadow(0 8px 10px rgba(0,0,0,.65))}
+.stamp{
+  position:relative;border:7px solid transparent;background:#eadfc4;padding:6px 6px 5px;
+  transform:rotate(6deg);color:#6b5a3e;
+  -webkit-mask:
+    radial-gradient(circle at 5px 5px,#0000 3px,#000 3.5px) -5px -5px/10px 10px border-box,
+    linear-gradient(#000 0 0) padding-box;
+  mask:
+    radial-gradient(circle at 5px 5px,#0000 3px,#000 3.5px) -5px -5px/10px 10px border-box,
+    linear-gradient(#000 0 0) padding-box;
+}
+.stamp .photo{position:relative;aspect-ratio:1/1.08;overflow:hidden;background:#8fb0ea;border:1px solid rgba(80,60,20,.35)}
+.stamp figcaption{font-size:13px;letter-spacing:.12em;text-align:center;margin-top:3px;line-height:1.2}
+
+.title{font-weight:400;line-height:1.1}
+.title span{display:block}
+.t1{font-size:clamp(26px,7vw,34px);letter-spacing:.14em;text-transform:uppercase;color:var(--chalk);
+  text-shadow:0 0 1px #fff,0 0 7px rgba(255,255,255,.16)}
+.t2{
+  font-size:clamp(96px,28vw,176px);line-height:.95;letter-spacing:-.02em;margin:2px 0 0;
+  color:transparent;
+  background:repeating-linear-gradient(118deg,var(--chalk) 0 2px,transparent 2px 7px);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-stroke:3.5px var(--chalk);
+}
+.t3{font-size:clamp(22px,6vw,28px);margin-top:4px;color:var(--chalk);text-shadow:0 0 1px #fff,0 0 7px rgba(255,255,255,.16)}
+.ribbon{display:block;width:min(88%,350px);margin:14px auto 0;overflow:visible}
+.ribbon text{fill:var(--chalk);font-family:var(--hand);font-size:21px;stroke:none}
+
+.route{position:relative;height:230px;margin:6px 0 2px}
+.route-line{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.plane{position:absolute;left:8%;top:5%;width:52px;animation:float 4s ease-in-out infinite}
+.sprig{position:absolute;left:3%;bottom:0;width:78px}
+.route .hrt{position:absolute}
+.route .sticker{right:2%;bottom:4px;width:106px;--r:8deg}
+
+.msg{
+  border:2px dashed var(--chalk);border-radius:14px;padding:14px 16px;margin-top:6px;
+  font-size:22px;line-height:1.5;color:var(--chalk);text-shadow:0 0 6px rgba(255,255,255,.14);
+}
+.date{margin-top:14px;font-size:26px;letter-spacing:.1em;color:var(--gold);text-shadow:0 0 8px rgba(227,185,78,.25)}
+
+.cta{
+  display:inline-flex;align-items:center;gap:10px;margin-top:22px;cursor:pointer;
+  font-family:var(--hand);font-size:22px;color:var(--chalk);text-decoration:none;
+  background:rgba(127,160,234,.12);border:2px solid var(--chalk);border-radius:999px;padding:9px 26px;
+  transition:background .3s,transform .3s;
+}
+.cta:hover{background:rgba(127,160,234,.28);transform:translateY(-2px)}
+.cta i{font-style:normal;display:inline-block;animation:bounce 1.6s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(-2px)}50%{transform:translateY(5px)}}
+
+/* ============ Sticker / ảnh / tape ============ */
+.sticker{
+  position:absolute;aspect-ratio:1;padding:8px;
+  background:#f6f8ff;border-radius:46% 54% 52% 48%/50% 46% 54% 50%;
+  box-shadow:0 6px 14px rgba(0,0,0,.55),inset 0 0 0 1.5px rgba(0,0,0,.07);
+  transform:rotate(var(--r,-8deg));
+}
+.sticker svg{width:100%;height:100%;display:block}
+
+.polaroid{
+  position:relative;background:#f7f3ea;padding:9px 9px 36px;
+  box-shadow:0 14px 26px -8px rgba(0,0,0,.75),0 0 0 1px rgba(0,0,0,.08);
+  transform:rotate(var(--r,0deg));
+}
+.polaroid.reveal{transition:opacity .9s ease,transform .9s cubic-bezier(.2,.8,.2,1)}
+.polaroid.reveal.in:hover{transform:translateY(-4px) rotate(0deg) scale(1.04)}
+.polaroid .photo{position:relative;aspect-ratio:1/1.04;overflow:hidden;background:#8fb0ea}
+.polaroid figcaption{position:absolute;left:6px;right:6px;bottom:7px;text-align:center;color:#3a3a46;font-size:18px;line-height:1}
+
+/* khung ảnh: ảnh thật phủ lên hình hoa vẽ sẵn (hiện khi chưa có ảnh) */
+.ph{
+  position:absolute;inset:0;display:grid;place-items:center;
+  background:
+    radial-gradient(circle at 82% 14%,rgba(255,255,255,.55) 0 7%,transparent 8%),
+    radial-gradient(circle at 14% 78%,rgba(255,255,255,.3) 0 9%,transparent 10%),
+    radial-gradient(circle at 30% 18%,#d3e2ff 0,#92b2ec 40%,#5f80c6 100%);
+}
+.ph svg{width:90%;height:90%}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+
+.tape{
+  position:absolute;top:-13px;left:50%;width:92px;height:26px;margin-left:-46px;z-index:5;
+  background:repeating-linear-gradient(45deg,rgba(150,182,238,.82) 0 8px,rgba(255,255,255,.6) 8px 16px);
+  box-shadow:0 2px 4px rgba(0,0,0,.35);transform:rotate(-3deg);
+  clip-path:polygon(0 8%,4% 0,8% 10%,12% 0,88% 0,92% 10%,96% 0,100% 8%,100% 92%,96% 100%,92% 90%,88% 100%,12% 100%,8% 90%,4% 100%,0 92%);
 }
 
-@keyframes glow {
-    from { transform: translate(-100px, -50px); }
-    to { transform: translate(100px, 80px); }
+/* ============ Trang thư ============ */
+.page-title{text-align:center;font-family:var(--script);font-weight:700;font-size:clamp(34px,9vw,50px);line-height:1.1}
+.page-title .hrt{width:.6em;height:.55em}
+.squig{display:block;width:170px;margin:4px auto 0}
+
+.stage{position:relative;width:min(100%,500px);margin:150px auto 150px}
+.stage .polaroid{position:absolute;z-index:3}
+.p1{top:-132px;left:-4px;width:132px}
+.p2{bottom:-136px;right:-4px;width:140px}
+.stage .sticker{top:-38px;right:-14px;width:82px;z-index:4;--r:10deg}
+
+.note-wrap{position:relative;filter:drop-shadow(0 16px 20px rgba(0,0,0,.6))}
+.note{
+  position:relative;padding:58px 22px 60px 52px;color:var(--ink);
+  background:
+    linear-gradient(90deg,transparent 40px,rgba(214,92,92,.55) 40px,rgba(214,92,92,.55) 42px,transparent 42px),
+    linear-gradient(180deg,transparent 33px,rgba(63,99,192,.26) 33px) 0 58px/100% 34px repeat-y,
+    radial-gradient(120% 90% at 20% 10%,#f7efdb,#e8dcc0);
+  clip-path:polygon(0% 1%,5% .2%,10% 1.2%,16% .3%,22% 1.4%,29% .2%,36% 1.1%,43% .1%,50% 1.3%,57% .3%,64% 1.2%,71% .2%,78% 1.4%,85% .3%,92% 1.1%,100% .2%,100% 98.8%,94% 99.8%,88% 98.6%,81% 99.7%,74% 98.7%,67% 99.8%,60% 98.5%,52% 99.6%,45% 98.8%,38% 99.8%,30% 98.6%,23% 99.7%,15% 98.7%,8% 99.8%,0% 98.9%);
+}
+.note::before{content:"";position:absolute;inset:0;background-image:var(--grain);opacity:.18;mix-blend-mode:multiply;pointer-events:none}
+.note .line{
+  font-size:22px;line-height:34px;margin:0;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .8s ease,transform .8s ease;transition-delay:calc(var(--i,0) * .6s);
+}
+.note-wrap.in .line{opacity:1;transform:none}
+.note .to{font-family:var(--script);font-weight:700;font-size:28px;color:var(--ink-blue)}
+.note .gap{height:34px}
+.note mark{background:linear-gradient(transparent 52%,rgba(127,160,234,.65) 52% 88%,transparent 88%);color:inherit;padding:0 2px}
+.note .from{font-family:var(--script);font-weight:700;font-size:36px;line-height:34px;text-align:right;color:var(--ink-blue);transform-origin:right}
+.note-wrap.in .from{transform:rotate(-4deg)}
+
+/* ============ Trang kết ============ */
+.end .inner{max-width:520px;margin:0 auto;text-align:center;padding-top:16px}
+.duo{display:flex;justify-content:center;align-items:flex-start;margin-bottom:34px}
+.duo .polaroid{width:min(44vw,190px)}
+.duo .e1{margin-right:-10px}
+.duo .e2{margin-top:28px}
+.big{
+  font-family:var(--script);font-weight:700;font-size:clamp(40px,12vw,72px);line-height:1.1;
+  color:#dde7ff;text-shadow:0 0 20px rgba(127,160,234,.6),0 0 2px #fff;
+}
+.wish{margin-top:14px;font-size:22px;color:var(--chalk)}
+.sign{font-family:var(--script);font-weight:700;font-size:38px;color:#dbe5ff;margin-top:6px;--r:-3deg}
+.foot{margin-top:26px;font-size:18px;letter-spacing:.2em;color:rgba(243,239,230,.55)}
+
+/* nút nhạc (chỉ hiện khi có file music.mp3) */
+.music{
+  position:fixed;right:14px;bottom:14px;z-index:60;width:44px;height:44px;border-radius:50%;
+  border:2px solid var(--chalk);background:rgba(12,12,15,.8);color:var(--chalk);
+  font-size:20px;cursor:pointer;display:grid;place-items:center;backdrop-filter:blur(4px);
+}
+.music[hidden]{display:none}
+.music.on{animation:spin 4s linear infinite;border-color:var(--gold);color:var(--gold)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ============ Màn hình lớn ============ */
+@media (min-width:860px){
+  .page{padding:54px 40px 64px 72px}
+  .cover-top{height:170px}
+  .cal{left:-70px;width:78px}
+  .stamp-wrap{right:-80px;width:140px}
+  .stage{margin:30px auto 40px}
+  .p1{top:10px;left:-212px;width:190px}
+  .p2{bottom:10px;right:-212px;width:200px}
+  .stage .sticker{width:96px}
+  .route .sticker{width:120px}
+}
+@media (max-width:380px){
+  .page{padding-left:50px;padding-right:20px}
+  .note{padding-left:48px;padding-right:16px}
+  .note .line{font-size:20px}
 }
 
-/* Thẻ lời chúc */
-.card {
-    position: relative;
-    z-index: 2;
-    width: min(90%, 460px);
-    padding: 40px 28px;
-    text-align: center;
-    border: 1px solid rgba(255,255,255,.25);
-    border-radius: 28px;
-    background: rgba(255,255,255,.09);
-    backdrop-filter: blur(18px);
-    box-shadow: 0 0 50px rgba(255, 68, 140, .15);
-    animation: appear 1.2s ease;
-}
-
-@keyframes appear {
-    from { opacity: 0; transform: translateY(30px) scale(.95); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.heart-icon {
-    font-size: 65px;
-    display: inline-block;
-    animation: heartbeat 1.3s infinite;
-    filter: drop-shadow(0 0 15px #ff548b);
-}
-
-@keyframes heartbeat {
-    0%, 100% { transform: scale(1); }
-    15% { transform: scale(1.18); }
-    30% { transform: scale(1); }
-    45% { transform: scale(1.12); }
-}
-
-h1 {
-    margin: 18px 0;
-    font-size: clamp(25px, 6vw, 34px);
-    line-height: 1.4;
-    background: linear-gradient(90deg, #fff, #ffb5d0, #fff);
-    background-size: 200%;
-    color: transparent;
-    background-clip: text;
-    animation: shine 3s linear infinite;
-}
-
-@keyframes shine {
-    to { background-position: 200%; }
-}
-
-.subtitle {
-    color: #f9cfe0;
-    font-size: 15px;
-    margin-bottom: 28px;
-}
-
-button {
-    padding: 14px 26px;
-    border: none;
-    border-radius: 50px;
-    background: linear-gradient(90deg, #ff548b, #ff80ab);
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 5px 25px rgba(255, 84, 139, .35);
-    transition: .3s;
-}
-
-button:hover {
-    transform: translateY(-3px) scale(1.04);
-    box-shadow: 0 8px 35px rgba(255, 84, 139, .6);
-}
-
-/* Bức thư */
-.letter {
-    display: none;
-    margin-top: 25px;
-    padding: 22px 18px;
-    border-radius: 18px;
-    background: rgba(255,255,255,.08);
-    text-align: left;
-    line-height: 1.9;
-    color: #fff0f6;
-    font-size: 15px;
-    animation: appear .8s ease;
-}
-
-.letter.show {
-    display: block;
-}
-
-.signature {
-    margin-top: 16px;
-    text-align: right;
-    color: #ffb5d0;
-    font-style: italic;
-}
-
-/* Trái tim bay */
-.floating-heart {
-    position: fixed;
-    bottom: -40px;
-    z-index: 1;
-    pointer-events: none;
-    animation: floatUp linear forwards;
-    opacity: .8;
-}
-
-@keyframes floatUp {
-    0% {
-        transform: translateY(0) rotate(0deg) scale(.7);
-        opacity: 0;
-    }
-    15% { opacity: .8; }
-    100% {
-        transform: translateY(-115vh) rotate(360deg) scale(1.3);
-        opacity: 0;
-    }
-}
-
-/* Sao */
-.star {
-    position: fixed;
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background: white;
-    box-shadow: 0 0 8px white;
-    animation: twinkle 2s infinite alternate;
-}
-
-@keyframes twinkle {
-    from { opacity: .2; transform: scale(.7); }
-    to { opacity: 1; transform: scale(1.5); }
-}
-
-.footer {
-    margin-top: 25px;
-    color: rgba(255,255,255,.55);
-    font-size: 12px;
-}
-
-@media (max-width: 480px) {
-    .card { padding: 30px 20px; }
-    .letter { font-size: 14px; }
+/* giảm chuyển động */
+@media (prefers-reduced-motion:reduce){
+  .spark,.dash,.plane,.cta i,.music.on{animation:none}
+  .pop{opacity:1;transform:none;animation:none}
+  .reveal{opacity:1;transform:rotate(var(--r,0deg));transition:none}
+  .note .line{opacity:1;transform:none;transition:none}
 }
 </style>
+
+<noscript>
+<style>
+.pop{opacity:1!important;transform:none!important;animation:none!important}
+.reveal{opacity:1!important;transform:rotate(var(--r,0deg))!important}
+.note .line{opacity:1!important;transform:none!important}
+</style>
+</noscript>
 </head>
 
 <body>
-<div class="glow"></div>
 
-<div class="card">
-    <div class="heart-icon">❤️</div>
+<!-- Thư viện hình dùng chung: nét phấn, hoa, sparkle, tim, góc kim loại -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id="chalk" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="2" seed="4" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.6"/>
+    </filter>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f6dc8e"/>
+      <stop offset=".42" stop-color="#b68a33"/>
+      <stop offset=".7" stop-color="#ecc972"/>
+      <stop offset="1" stop-color="#7d5a1d"/>
+    </linearGradient>
+    <radialGradient id="hl" cx=".32" cy=".26" r=".75">
+      <stop offset="0" stop-color="#fff" stop-opacity=".5"/>
+      <stop offset=".55" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
 
-    <h1>Gửi em, người anh thương</h1>
+    <!-- 1 bông nhỏ của chùm cẩm tú cầu: 4 cánh -->
+    <g id="floret" fill="currentColor" stroke="rgba(18,30,90,.32)" stroke-width=".55">
+      <ellipse cx="0" cy="-5.6" rx="4.7" ry="6.3"/>
+      <ellipse cx="0" cy="-5.6" rx="4.7" ry="6.3" transform="rotate(90)"/>
+      <ellipse cx="0" cy="-5.6" rx="4.7" ry="6.3" transform="rotate(180)"/>
+      <ellipse cx="0" cy="-5.6" rx="4.7" ry="6.3" transform="rotate(270)"/>
+      <circle r="1.5" fill="#eef3ff" stroke="none"/>
+      <circle r=".65" fill="#c9d68a" stroke="none"/>
+    </g>
 
-    <p class="subtitle">
-        Có một điều anh muốn nói với em...
-    </p>
+    <path id="spark" d="M0-10Q1.3-1.3 10 0Q1.3 1.3 0 10Q-1.3 1.3-10 0Q-1.3-1.3 0-10Z"/>
 
-    <button id="openBtn" onclick="openLetter()">
-        💌 Mở món quà dành cho em
-    </button>
+    <symbol id="heart" viewBox="0 0 24 22">
+      <path d="M12 20.5C5 15.5 1.5 11.5 1.5 7.2 1.5 4 3.9 1.8 6.7 1.8c2 0 3.9 1.2 5.3 3.4 1.4-2.2 3.3-3.4 5.3-3.4 2.8 0 5.2 2.2 5.2 5.4 0 4.3-3.5 8.3-10.5 13.3z"/>
+    </symbol>
 
-    <div class="letter" id="letter">
-        <p>Em yêu à, ❤️</p>
+    <symbol id="corner" viewBox="0 0 100 100">
+      <path d="M0 0H100V100C92 52 52 8 0 0Z" fill="url(#gold)" stroke="#6b4b14" stroke-width="1.4"/>
+      <g fill="none" stroke="#6b4b14" stroke-width="2.2" stroke-linecap="round" opacity=".8">
+        <path d="M60 24c10-4 18 4 14 12s-14 6-14-2 8-9 12-4"/>
+        <path d="M80 54c7 0 11 6 8 11s-11 4-11-2 6-6 8-3"/>
+        <path d="M38 10c6 2 8 8 3 11s-10-1-8-6"/>
+        <path d="M90 28c4 2 4 7 0 8"/>
+      </g>
+      <g fill="#fff" opacity=".4"><circle cx="30" cy="5" r="1.6"/><circle cx="95" cy="70" r="1.6"/><circle cx="70" cy="12" r="1.2"/></g>
+    </symbol>
+  </defs>
+</svg>
 
-        <p>
-            Anh không biết những lời này có đủ ngọt ngào không,
-            nhưng anh muốn em biết rằng em là một điều rất đặc biệt
-            trong cuộc sống của anh.
-        </p>
+<canvas id="petals" aria-hidden="true"></canvas>
 
-        <p>
-            Cảm ơn em vì đã xuất hiện, vì những nụ cười,
-            những quan tâm nhỏ bé và cả những khoảnh khắc
-            bình thường mà khi ở bên em lại trở nên thật đáng nhớ.
-        </p>
+<main class="book">
 
-        <p>
-            Anh không hứa mọi ngày đều hoàn hảo,
-            nhưng anh mong mình có thể cùng nhau vượt qua những ngày
-            không vui, cùng trưởng thành và tạo nên thật nhiều
-            kỷ niệm đẹp.
-        </p>
+  <!-- ===================== TRANG 1: BÌA ===================== -->
+  <section class="page cover" id="cover">
+    <div class="inner">
 
-        <p>
-            Mong em luôn vui vẻ, bình an và được yêu thương thật nhiều.
-            Nếu được lựa chọn, anh vẫn muốn người cùng anh đi qua
-            những ngày tháng sau này là em. 💗
-        </p>
+      <div class="cover-top">
+        <!-- lịch chấm 20/10 -->
+        <svg class="cal pop" style="--d:.4" viewBox="0 0 80 88" aria-hidden="true">
+          <g class="doodle" filter="url(#chalk)">
+            <path d="M14 78H72V26"/>
+            <rect x="8" y="16" width="58" height="56" rx="4"/>
+            <path d="M8 32H66"/>
+            <path d="M20 9v14M34 9v14M48 9v14M60 9v14"/>
+          </g>
+          <text x="37" y="60" text-anchor="middle" font-size="19">20/10</text>
+        </svg>
 
-        <div class="signature">
-            Thương em thật nhiều,<br>
-            ❤️ Người luôn nghĩ về em
+        <!-- tem hoa cẩm tú cầu: ảnh hydrangea-1.jpg -->
+        <div class="stamp-wrap pop" style="--d:.7">
+          <figure class="stamp">
+            <div class="photo">
+              <div class="ph" data-hydrangea="11"></div>
+              <img src="images/hydrangea-1.jpg" alt="Hoa cẩm tú cầu xanh" onerror="this.remove()">
+            </div>
+            <figcaption>20 · 10 · 2026</figcaption>
+          </figure>
         </div>
-    </div>
+      </div>
 
-    <div class="footer">
-        Made with love, just for you ♡
+      <h1 class="title pop" style="--d:.2">
+        <span class="t1">chúc mừng</span>
+        <span class="t2">20/10</span>
+        <span class="t3">ngày Phụ nữ Việt Nam</span>
+      </h1>
+
+      <!-- ruy băng -->
+      <svg class="ribbon pop" style="--d:.55" viewBox="0 0 340 70" aria-hidden="true">
+        <g class="doodle" filter="url(#chalk)" style="stroke-width:2.2">
+          <path d="M12 20L58 15V55L12 60L30 38Z"/>
+          <path d="M328 20L282 15V55L328 60L310 38Z"/>
+          <path d="M58 13Q170 22 282 13V53Q170 62 58 53Z" style="fill:#18181b"/>
+        </g>
+        <text x="170" y="43" text-anchor="middle">bé iu của Duke ♡</text>
+      </svg>
+
+      <!-- đường bay giấy + cành hoa + sticker -->
+      <div class="route pop" style="--d:1">
+        <svg class="route-line" viewBox="0 0 400 230" preserveAspectRatio="none" aria-hidden="true">
+          <path class="dash" d="M64 52C20 110 70 190 170 170S300 90 392 140" vector-effect="non-scaling-stroke"/>
+        </svg>
+
+        <svg class="plane" viewBox="0 0 60 60" aria-hidden="true">
+          <g class="doodle" filter="url(#chalk)">
+            <path d="M4 28L56 6L40 54L28 36Z"/>
+            <path d="M56 6L28 36"/>
+            <path d="M28 36L26 50L34 42"/>
+          </g>
+        </svg>
+
+        <svg class="sprig" viewBox="0 0 90 120" aria-hidden="true">
+          <g class="doodle" filter="url(#chalk)" style="stroke-width:2">
+            <path d="M30 118C34 80 40 50 58 8"/>
+            <path d="M36 92C24 84 18 74 10 66"/>
+            <path d="M39 76C52 72 60 64 70 50"/>
+            <path d="M43 58C32 52 28 44 24 32"/>
+            <path d="M48 42C58 40 64 32 70 22"/>
+          </g>
+          <g fill="#e3b94e">
+            <circle cx="10" cy="66" r="4.2"/><circle cx="70" cy="50" r="4.2"/><circle cx="24" cy="32" r="4.2"/>
+            <circle cx="70" cy="22" r="4.2"/><circle cx="58" cy="8" r="4.6"/><circle cx="18" cy="76" r="3"/><circle cx="62" cy="62" r="3"/>
+          </g>
+        </svg>
+
+        <svg class="hrt" style="left:40%;top:60%;width:34px;height:31px" viewBox="0 0 24 22" aria-hidden="true"><use href="#heart" width="24" height="22"/></svg>
+        <svg class="hrt gold" style="left:66%;top:24%;width:24px;height:22px" viewBox="0 0 24 22" aria-hidden="true"><use href="#heart" width="24" height="22"/></svg>
+
+        <div class="sticker" data-hydrangea="33" aria-hidden="true"></div>
+      </div>
+
+      <div class="msg pop" style="--d:1.2">gửi lời chúc nho nhỏ bé xinh ♡</div>
+      <p class="date pop" style="--d:1.35">20.10.2026</p>
+
+      <a class="cta pop" style="--d:1.5" href="#letter">mở thư <i>↓</i></a>
     </div>
-</div>
+  </section>
+
+  <!-- ===================== TRANG 2: LỜI CHÚC ===================== -->
+  <section class="page letter" id="letter">
+    <div class="inner">
+
+      <h2 class="page-title chalk reveal">
+        lời chúc nho nhỏ
+        <svg class="hrt gold" viewBox="0 0 24 22" aria-hidden="true"><use href="#heart" width="24" height="22"/></svg>
+      </h2>
+      <svg class="squig reveal" viewBox="0 0 200 14" aria-hidden="true">
+        <path class="doodle" filter="url(#chalk)" d="M4 8c12-8 20 8 32 0s20 8 32 0 20 8 32 0 20 8 32 0 20 8 32 0 20 8 32 0"/>
+      </svg>
+
+      <div class="stage">
+
+        <!-- ảnh hydrangea-2.jpg -->
+        <figure class="polaroid p1 reveal" style="--r:-7deg">
+          <i class="tape"></i>
+          <div class="photo">
+            <div class="ph" data-hydrangea="21"></div>
+            <img src="images/hydrangea-2.jpg" alt="Hoa cẩm tú cầu xanh" loading="lazy" onerror="this.remove()">
+          </div>
+          <figcaption>xanh dịu dàng</figcaption>
+        </figure>
+
+        <!-- lá thư -->
+        <div class="note-wrap reveal" id="noteWrap">
+          <i class="tape" style="top:-15px"></i>
+          <article class="note">
+            <p class="line to" style="--i:0">Gửi lời chúc nho nhỏ bé xinh đến bé iu của Duke</p>
+            <div class="gap line" style="--i:1"></div>
+            <p class="line" style="--i:2">Chúc em ngày <mark>20/10</mark> vui vẻ, xinh đẹp như em mọi ngày</p>
+            <p class="line" style="--i:3">Cảm ơn em đã luôn đồng hành, cảm thông cho anh</p>
+            <p class="line" style="--i:4">Yêu bé iu nhiều, mong những điều tốt đẹp nhất sẽ luôn bên em</p>
+            <div class="gap line" style="--i:5"></div>
+            <p class="line from" style="--i:6">Moazz 💋</p>
+          </article>
+        </div>
+
+        <div class="sticker" data-hydrangea="44" aria-hidden="true"></div>
+
+        <!-- ảnh hydrangea-3.jpg -->
+        <figure class="polaroid p2 reveal" style="--r:6deg">
+          <i class="tape"></i>
+          <div class="photo">
+            <div class="ph" data-hydrangea="31"></div>
+            <img src="images/hydrangea-3.jpg" alt="Hoa cẩm tú cầu xanh" loading="lazy" onerror="this.remove()">
+          </div>
+          <figcaption>mùa hoa của em</figcaption>
+        </figure>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================== TRANG 3: KẾT ===================== -->
+  <section class="page end" id="end">
+    <div class="inner">
+
+      <div class="duo">
+        <!-- ảnh hydrangea-4.jpg -->
+        <figure class="polaroid e1 reveal" style="--r:-6deg">
+          <i class="tape"></i>
+          <div class="photo">
+            <div class="ph" data-hydrangea="51"></div>
+            <img src="images/hydrangea-4.jpg" alt="Hoa cẩm tú cầu xanh" loading="lazy" onerror="this.remove()">
+          </div>
+          <figcaption>một chút xanh</figcaption>
+        </figure>
+        <!-- ảnh hydrangea-5.jpg -->
+        <figure class="polaroid e2 reveal" style="--r:5deg">
+          <i class="tape"></i>
+          <div class="photo">
+            <div class="ph" data-hydrangea="61"></div>
+            <img src="images/hydrangea-5.jpg" alt="Hoa cẩm tú cầu xanh" loading="lazy" onerror="this.remove()">
+          </div>
+          <figcaption>cho bé iu</figcaption>
+        </figure>
+      </div>
+
+      <h2 class="big reveal">20/10 vui vẻ nhé<br>bé iu ♡</h2>
+      <p class="wish reveal">mong những điều tốt đẹp nhất sẽ luôn bên em</p>
+      <p class="sign reveal">Moazz 💋</p>
+
+      <button class="cta" id="bloom" type="button">thả hoa ✿</button>
+      <p class="foot">20 · 10 · 2026</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- Nhạc nền (tuỳ chọn): bỏ file music.mp3 cạnh index.html, nút ♪ sẽ tự hiện -->
+<audio id="bgm" src="music.mp3" loop preload="metadata"></audio>
+<button class="music" id="music" type="button" aria-label="Bật/tắt nhạc" hidden>♪</button>
 
 <script>
-// Tạo sao lung linh
-for (let i = 0; i < 65; i++) {
-    const star = document.createElement("div");
-    star.className = "star";
-    star.style.left = Math.random() * 100 + "vw";
-    star.style.top = Math.random() * 100 + "vh";
-    star.style.animationDelay = Math.random() * 3 + "s";
-    star.style.animationDuration = (1 + Math.random() * 3) + "s";
-    document.body.appendChild(star);
-}
+(() => {
+  'use strict';
 
-// Tạo trái tim bay
-function createHeart() {
-    const heart = document.createElement("div");
-    heart.className = "floating-heart";
+  /* ---------- 1. Vẽ chùm hoa cẩm tú cầu bằng SVG (hiện khi chưa có ảnh thật) ---------- */
+  const rng = seed => { let s = (seed >>> 0) || 1; return () => ((s = (Math.imul(s, 1664525) + 1013904223) >>> 0) / 4294967296); };
 
-    const hearts = ["❤️", "💕", "💗", "💖", "💘", "♡"];
-    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = (14 + Math.random() * 22) + "px";
-    heart.style.animationDuration = (5 + Math.random() * 5) + "s";
-
-    document.body.appendChild(heart);
-
-    setTimeout(() => heart.remove(), 10000);
-}
-
-setInterval(createHeart, 400);
-
-// Mở bức thư
-function openLetter() {
-    const letter = document.getElementById("letter");
-    const button = document.getElementById("openBtn");
-
-    letter.classList.add("show");
-    button.textContent = "💖 Anh thương em nhiều lắm";
-    button.disabled = true;
-    button.style.opacity = "0.8";
-
-    // Bùng nổ trái tim
-    for (let i = 0; i < 35; i++) {
-        setTimeout(createHeart, i * 70);
+  function hydrangea(seed) {
+    const R = rng(seed * 7919 + 13);
+    const pal = ['#3b5fbe', '#4a73d1', '#648ae0', '#86a5ec', '#a6bef2', '#5a6cd0', '#7b85dc', '#bccaf5'];
+    const pts = [];
+    for (let t = 0; t < 1200 && pts.length < 56; t++) {
+      const a = R() * 6.2832, d = Math.sqrt(R()) * 84;
+      const x = 100 + Math.cos(a) * d, y = 94 + Math.sin(a) * d * 0.9;
+      if (pts.every(p => Math.hypot(p.x - x, p.y - y) > 15.5)) pts.push({ x, y, d });
     }
-}
+    pts.sort((a, b) => b.d - a.d); // viền vẽ trước, giữa vẽ sau
+    let s = '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">';
+    s += '<g stroke="#1f3d2d" stroke-width=".8">'
+      + '<path d="M96 170C60 176 22 160 8 130c32-8 70 4 88 40z" fill="#3a6b4d"/>'
+      + '<path d="M104 170c36 6 74-10 90-40-32-8-70 4-90 40z" fill="#315e45"/>'
+      + '<path d="M100 178C84 150 90 120 100 100c12 22 14 52 0 78z" fill="#4a7d57"/></g>';
+    for (const p of pts) {
+      const k = Math.max(0, Math.min(pal.length - 1, Math.floor((R() * 0.5 + (1 - (p.x + p.y) / 380) * 0.5) * pal.length)));
+      const sc = (1.12 - (p.d / 84) * 0.32).toFixed(2);
+      const r = (R() * 90).toFixed(0);
+      s += `<use href="#floret" transform="translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) rotate(${r}) scale(${sc})" style="color:${pal[k]}"/>`;
+    }
+    s += '<circle cx="100" cy="94" r="86" fill="url(#hl)"/></svg>';
+    return s;
+  }
+  document.querySelectorAll('[data-hydrangea]').forEach(el => { el.innerHTML = hydrangea(+el.dataset.hydrangea); });
+
+  /* ---------- 2. Gáy lò xo, góc kim loại, sparkle ---------- */
+  const SPARKS = {
+    cover: [[8, 5, 15, '#e3b94e'], [46, 2.5, 10, '#f3efe6'], [91, 31, 13, '#e3b94e'], [5, 36, 17, '#e3b94e'],
+            [92, 63, 10, '#f3efe6'], [14, 74, 12, '#e3b94e'], [76, 90, 14, '#e3b94e'], [52, 66, 9, '#f3efe6']],
+    letter: [[10, 8, 14, '#e3b94e'], [88, 22, 11, '#f3efe6'], [6, 55, 12, '#e3b94e'], [92, 80, 14, '#e3b94e'], [48, 94, 10, '#f3efe6']],
+    end: [[10, 10, 15, '#e3b94e'], [88, 14, 11, '#f3efe6'], [8, 62, 12, '#e3b94e'], [90, 70, 15, '#e3b94e'], [50, 94, 10, '#f3efe6']]
+  };
+  const cornerSVG = pos => `<svg class="corner ${pos}" viewBox="0 0 100 100" aria-hidden="true"><use href="#corner" width="100" height="100"/></svg>`;
+
+  function decoratePages() {
+    document.querySelectorAll('.page').forEach(pg => {
+      if (!pg.querySelector('.spiral')) {
+        const sp = document.createElement('div');
+        sp.className = 'spiral';
+        pg.prepend(sp);
+        pg.insertAdjacentHTML('beforeend', cornerSVG('tr') + cornerSVG('br'));
+        (SPARKS[pg.id] || []).forEach(([x, y, s, c], i) => {
+          pg.insertAdjacentHTML('beforeend',
+            `<svg class="spark" viewBox="-10 -10 20 20" aria-hidden="true" style="--x:${x}%;--y:${y}%;--s:${s};--c:${c};--dl:${(i * 0.45).toFixed(2)}s"><use href="#spark"/></svg>`);
+        });
+      }
+      const sp = pg.querySelector('.spiral');
+      const n = Math.max(6, Math.floor(pg.clientHeight / 38));
+      if (sp.childElementCount !== n) sp.innerHTML = '<i></i>'.repeat(n);
+    });
+  }
+  decoratePages();
+  if ('ResizeObserver' in window) {
+    const ro = new ResizeObserver(decoratePages);
+    document.querySelectorAll('.page').forEach(p => ro.observe(p));
+  } else addEventListener('resize', decoratePages);
+
+  /* ---------- 3. Hiện dần khi cuộn ---------- */
+  const reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    }), { threshold: 0.2, rootMargin: '0px 0px -6% 0px' });
+    reveals.forEach(el => io.observe(el));
+  } else reveals.forEach(el => el.classList.add('in'));
+
+  /* ---------- 4. Cánh hoa / trái tim rơi (canvas) ---------- */
+  const cv = document.getElementById('petals');
+  const ctx = cv.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const PETAL = ['#7fa0ea', '#9db5ee', '#b7c9f6', '#6a86d8', '#cdd9fb', '#a79be6'];
+  const HEART = ['#f4a3b8', '#ffd27a', '#ffffff', '#9db5ee'];
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  let W = 0, H = 0, parts = [], raf = 0;
+
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function ambient(fromTop) {
+    return { amb: true, kind: 'petal', x: rnd(0, W), y: fromTop ? -20 : rnd(-20, H),
+      vx: rnd(-.2, .3), vy: rnd(.35, .9), s: rnd(4, 8), a: rnd(0, 6.28), va: rnd(-.02, .02),
+      ph: rnd(0, 6.28), vph: rnd(.01, .03), c: PETAL[(Math.random() * PETAL.length) | 0], al: rnd(.35, .7) };
+  }
+
+  function spawn(x, y, n, power, up) {
+    for (let i = 0; i < n; i++) {
+      const ang = up ? rnd(-Math.PI * .88, -Math.PI * .12) : rnd(0, 6.2832);
+      const sp = rnd(1.5, power);
+      const heart = Math.random() < .38;
+      parts.push({
+        amb: false, kind: heart ? 'heart' : 'petal', x, y,
+        vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp,
+        s: heart ? rnd(6, 11) : rnd(4, 8), a: rnd(0, 6.28), va: rnd(-.12, .12),
+        ph: rnd(0, 6.28), vph: rnd(.05, .12),
+        c: heart ? HEART[(Math.random() * HEART.length) | 0] : PETAL[(Math.random() * PETAL.length) | 0],
+        al: rnd(.75, 1), life: rnd(70, 140)
+      });
+    }
+  }
+
+  function draw(p) {
+    const fade = p.amb ? 1 : Math.min(1, p.life / 30);
+    ctx.save();
+    ctx.translate(p.x, p.y); ctx.rotate(p.a);
+    ctx.globalAlpha = p.al * fade; ctx.fillStyle = p.c;
+    if (p.kind === 'heart') {
+      const s = p.s;
+      ctx.beginPath();
+      ctx.moveTo(0, s * .35);
+      ctx.bezierCurveTo(-s * 1.1, -s * .5, -s * .5, -s * 1.2, 0, -s * .45);
+      ctx.bezierCurveTo(s * .5, -s * 1.2, s * 1.1, -s * .5, 0, s * .35);
+      ctx.fill();
+    } else {
+      ctx.scale(Math.abs(Math.cos(p.ph)) * .7 + .3, 1);
+      ctx.beginPath(); ctx.ellipse(0, 0, p.s * .8, p.s * 1.2, 0, 0, 6.2832); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function step() {
+    ctx.clearRect(0, 0, W, H);
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const p = parts[i];
+      p.ph += p.vph; p.a += p.va;
+      if (p.amb) {
+        p.x += p.vx + Math.sin(p.ph) * .5; p.y += p.vy;
+        if (p.y > H + 20) Object.assign(p, ambient(true));
+      } else {
+        p.vx *= .985; p.vy = p.vy * .985 + .06;
+        p.x += p.vx; p.y += p.vy; p.life--;
+        if (p.life <= 0) { parts.splice(i, 1); continue; }
+      }
+      draw(p);
+    }
+    raf = requestAnimationFrame(step);
+  }
+
+  resize();
+  addEventListener('resize', resize);
+  if (!reduce) {
+    const n = Math.min(26, Math.round(W / 22));
+    for (let i = 0; i < n; i++) parts.push(ambient(false));
+  }
+  raf = requestAnimationFrame(step);
+  document.addEventListener('visibilitychange', () => {
+    cancelAnimationFrame(raf);
+    if (!document.hidden) raf = requestAnimationFrame(step);
+  });
+
+  // chạm đâu cũng bay vài cánh hoa
+  addEventListener('pointerdown', e => spawn(e.clientX, e.clientY, 7, 3.4, false), { passive: true });
+
+  // nút "thả hoa"
+  document.getElementById('bloom').addEventListener('click', e => {
+    e.stopPropagation();
+    for (let i = 0; i < 5; i++) {
+      setTimeout(() => spawn(rnd(W * .15, W * .85), H * .98, 22, 11, true), i * 140);
+    }
+  });
+
+  /* ---------- 5. Nhạc nền (tuỳ chọn) ---------- */
+  const bgm = document.getElementById('bgm');
+  const musicBtn = document.getElementById('music');
+  bgm.addEventListener('loadedmetadata', () => { musicBtn.hidden = false; });
+  musicBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    if (bgm.paused) { bgm.play().catch(() => {}); musicBtn.classList.add('on'); }
+    else { bgm.pause(); musicBtn.classList.remove('on'); }
+  });
+})();
 </script>
 </body>
 </html>
