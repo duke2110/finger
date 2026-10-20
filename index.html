@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reversed Hand Display</title>
+    <title>Neon Cyber Middle Finger</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
         body {
             margin: 0;
             height: 100vh;
@@ -12,29 +15,152 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: #121212;
+            background: radial-gradient(circle, #1a0826 0%, #05010d 100%);
             color: #ffffff;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            position: relative;
         }
+
+        /* Hiệu ứng hạt bụi bay nền */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 2;
+        }
+
+        /* Định hình ngón giữa phát sáng */
         .emoji {
-            font-size: 100px;
+            font-size: 130px;
             margin-bottom: 20px;
-            animation: bounce 2s infinite;
+            cursor: pointer;
+            display: inline-block;
+            filter: drop-shadow(0 0 10px #ff0055) drop-shadow(0 0 30px #ff0055);
+            animation: float 3s ease-in-out infinite, pulseGlow 2s infinite alternate;
+            transition: transform 0.2s;
         }
+
+        .emoji:hover {
+            transform: scale(1.2) rotate(5deg);
+            filter: drop-shadow(0 0 20px #00ffff) drop-shadow(0 0 40px #00ffff);
+        }
+
+        /* Chữ Cyberpunk */
         h1 {
-            font-size: 24px;
-            color: #bb86fc;
+            font-size: 28px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #fff;
+            text-shadow: 0 0 5px #fff, 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff;
+            animation: flicker 1.5s infinite alternate;
         }
-        @keyframes bounce {
+
+        /* Hiệu ứng bay bổng nhẹ nhàng */
+        @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* Hiệu ứng xung mạch phát sáng dập dình */
+        @keyframes pulseGlow {
+            0% { filter: drop-shadow(0 0 15px #ff0055) drop-shadow(0 0 30px #ff0055); }
+            100% { filter: drop-shadow(0 0 25px #ff0055) drop-shadow(0 0 60px #ff0055); }
+        }
+
+        /* Hiệu ứng đèn Neon nhấp nháy lỗi */
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow: 0 0 5px #fff, 0 0 10px #00ffff, 0 0 20px #00ffff;
+            }
+            20%, 24%, 55% {        
+                text-shadow: none;
+                color: #333;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="emoji">🖕</div>
-    <h1>Xin kính gửi anh Nam</h1>
+    <!-- Tạo canvas nền hiệu ứng ma trận hạt -->
+    <canvas class="particles" id="particleCanvas"></canvas>
 
+    <div class="container">
+        <!-- Ngón tay giữa phát sáng Cyberpunk -->
+        <div class="emoji" onclick="triggerExplosion()">🖕</div>
+        <h1>System Override</h1>
+    </div>
+
+    <script>
+        // Logic tạo các hạt Neon chạy mượt mà ở hình nền nền
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedY = Math.random() * -1 - 0.5;
+                this.color = Math.random() > 0.5 ? '#ff0055' : '#00ffff';
+                this.opacity = Math.random();
+            }
+            update() {
+                this.y += this.speedY;
+                if (this.y < 0) {
+                    this.y = canvas.height;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 60; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Hiệu ứng tương tác nhỏ: Click vào ngón tay để đổi màu nền tạm thời cực bắt mắt
+        function triggerExplosion() {
+            const h1 = document.querySelector('h1');
+            h1.style.color = '#ff0055';
+            h1.style.textShadow = '0 0 20px #ff0055';
+            setTimeout(() => {
+                h1.style.color = '#fff';
+                h1.style.textShadow = '0 0 10px #00ffff, 0 0 20px #00ffff';
+            }, 300);
+        }
+    </script>
 </body>
 </html>
